@@ -11,30 +11,39 @@ type Todo = {
 }
 
 function Button({ className, ...props }: ComponentProps<'button'>) {
-  return <button {...props} className={`px-2 py-1 bg-gray-800 text-white ${className ?? ''}`} />
+  return (
+    <button
+      {...props}
+      className={`px-2 py-1 bg-gray-800 text-white ${className ?? ''}`}
+    />
+  )
 }
 
-
 function Stats({ todos }: { todos: Todo[] }) {
-  return (<div className='container mx-auto bg-slate-50 p-10 mb-4'>
-    <div className='flex justify-between'>
-      <div className='text-gray-800 font-bold'>Total Todos: {todos.length}</div>
-      <div className='text-gray-800 font-bold'>Completed Todos: {todos.filter((todo) => todo.completed).length}</div>
+  return (
+    <div className="container mx-auto bg-slate-50 p-10 mb-4">
+      <div className="flex justify-between">
+        <div className="text-gray-800 font-bold">
+          Total Todos: {todos.length}
+        </div>
+        <div className="text-gray-800 font-bold">
+          Completed Todos: {todos.filter((todo) => todo.completed).length}
+        </div>
+      </div>
     </div>
-  </div>)
+  )
 }
 
 const Home: NextPage = () => {
-  const [todos, setTodos] = useState<Todo[]>([]);
-
+  const [todos, setTodos] = useState<Todo[]>([])
 
   const onSubmit = (e: FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
+    e.preventDefault()
 
-    const formData = new FormData(e.currentTarget);
+    const formData = new FormData(e.currentTarget)
 
     if (formData.get('title') === '') {
-      return;
+      return
     }
 
     const newTodo = {
@@ -46,28 +55,29 @@ const Home: NextPage = () => {
 
     setTodos((prevTodos) => [...prevTodos, newTodo])
     // reset form
-    e.currentTarget.reset();
+    e.currentTarget.reset()
   }
 
   const toggleTodo = (id: number) => {
-    setTodos((prevTodos) => prevTodos.map((todo) => {
-      if (todo.id === id) {
-        return {
-          ...todo,
-          completed: !todo.completed
+    setTodos((prevTodos) =>
+      prevTodos.map((todo) => {
+        if (todo.id === id) {
+          return {
+            ...todo,
+            completed: !todo.completed,
+          }
         }
-      }
-      return todo;
-    }))
+        return todo
+      })
+    )
   }
 
   const sortedTodos = todos.sort((a, b) => {
     if (a.completed === b.completed) {
-      return a.createdAt.getTime() - b.createdAt.getTime();
+      return a.createdAt.getTime() - b.createdAt.getTime()
     }
-    return a.completed ? 1 : -1;
+    return a.completed ? 1 : -1
   })
-
 
   return (
     <div>
@@ -86,10 +96,14 @@ const Home: NextPage = () => {
       </div>
 
       <div className="mx-auto container max-w-screen-md">
-        <div className='container mx-auto bg-slate-200 p-10 mb-4 sticky top-0 z-10'>
+        <div className="container mx-auto bg-slate-200 p-10 mb-4 sticky top-0 z-10">
           <form onSubmit={onSubmit} className="flex gap-2 mb-4">
-            <input type={'text'} name="title" className='flex-1 p-2 border-neutral-300 border' />
-            <Button type={'submit'} >Add Todo</Button>
+            <input
+              type={'text'}
+              name="title"
+              className="flex-1 p-2 border-neutral-300 border"
+            />
+            <Button type={'submit'}>Add Todo</Button>
           </form>
 
           {/* Remove all todo */}
@@ -102,24 +116,26 @@ const Home: NextPage = () => {
         </div>
 
         {/* Stats */}
-        {todos.length > 0 && (
-          <Stats todos={todos} />
-        )}
+        {todos.length > 0 && <Stats todos={todos} />}
 
         <div>
           <ul>
             {sortedTodos.map((todo) => (
-              <li key={todo.id} className={`mb-4 ${todo.completed ? 'opacity-50 line-through' : ''}`}>
-                <button className=' w-full p-4 bg-sky-300 flex gap-2' onClick={() => {
-                  toggleTodo(todo.id)
-                }}>
-                  <span className='rounded bg-green-300 p-1'>{todo.id}</span>
-                  <span className='flex-1 text-left'>
-                    {todo.title}
-                  </span>
-                  <span>
-                    {todo.createdAt?.toLocaleDateString()}
-                  </span>
+              <li
+                key={todo.id}
+                className={`mb-4 ${
+                  todo.completed ? 'opacity-50 line-through' : ''
+                }`}
+              >
+                <button
+                  className=" w-full p-4 bg-sky-300 flex gap-2"
+                  onClick={() => {
+                    toggleTodo(todo.id)
+                  }}
+                >
+                  <span className="rounded bg-green-300 p-1">{todo.id}</span>
+                  <span className="flex-1 text-left">{todo.title}</span>
+                  <span>{todo.createdAt?.toLocaleDateString()}</span>
                 </button>
               </li>
             ))}
@@ -127,11 +143,8 @@ const Home: NextPage = () => {
         </div>
 
         {/* Stats */}
-        {todos.length > 0 && (
-          <Stats todos={todos} />
-        )}
+        {todos.length > 0 && <Stats todos={todos} />}
       </div>
-
 
       <footer>
         <div className="bg-gray-800 text-white p-4 text-center">

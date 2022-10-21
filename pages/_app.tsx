@@ -5,7 +5,7 @@ import Script from 'next/script'
 function MyApp({ Component, pageProps }: AppProps) {
   return (
     <>
-      <Script src='https://localhost:8082/bootstrap.js' />
+      <Script src="https://localhost:8082/bootstrap.js" />
       <Component {...pageProps} />
     </>
   )
